@@ -1,2 +1,2 @@
-# zohobooks-api
+# ZohoBooks API - PHP SDK library
 ZohoBooks PHP library

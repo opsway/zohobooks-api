@@ -1,0 +1,6 @@
+### Composer template
+composer.lock
+/vendor
+
+# User-specific stuff:
+.idea/
