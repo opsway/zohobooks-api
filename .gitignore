@@ -1,3 +1,6 @@
+### PHP CS Fixer
+.php_cs
+
 ### Composer template
 /composer.lock
 /vendor/

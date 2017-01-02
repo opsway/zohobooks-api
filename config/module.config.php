@@ -7,7 +7,7 @@ return [
         'factories' => [
             Api::class => Factory\ApiServiceFactory::class,
         ],
-        'aliases'   => [
+        'aliases' => [
             'zohobooks' => Api::class,
         ],
     ],

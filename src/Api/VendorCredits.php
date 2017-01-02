@@ -10,12 +10,14 @@ class VendorCredits extends BaseApi
     public function applyToBill($vendorCreditId, $data)
     {
         $response = $this->client->post(static::API_URL.'/'.$vendorCreditId.'/bills', $this->organizationId, $data);
+
         return true;
     }
 
     public function markAsVoid($vendorCreditId)
     {
         $response = $this->client->post(static::API_URL.'/'.$vendorCreditId.'/status/void', $this->organizationId);
+
         return true;
     }
 }

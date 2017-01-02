@@ -10,6 +10,7 @@ class CustomerPayments extends BaseApi
     public function list(array $filters = [])
     {
         $response = $this->client->getList(static::API_URL, $this->organizationId, $filters);
+
         return $response['customerpayments'];
     }
 }

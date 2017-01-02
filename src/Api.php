@@ -21,8 +21,7 @@ class Api
      */
     public function __construct($emailOrToken, $password = null)
     {
-
-        if (is_null($password)) {
+        if (null === $password) {
             $this->authToken = $emailOrToken;
         } else {
             $this->email = $emailOrToken;
@@ -35,9 +34,10 @@ class Api
      */
     public function getClient()
     {
-        if (is_null($this->client)) {
+        if (null ===  $this->client) {
             $this->setClient(new Client($this->authToken, $this->email, $this->password));
         }
+
         return $this->client;
     }
 
@@ -54,6 +54,7 @@ class Api
     public function setClient(Client $client)
     {
         $this->client = $client;
+
         return $this;
     }
 
@@ -65,9 +66,9 @@ class Api
     public function setOrganizationId($organizationId)
     {
         $this->organizationId = $organizationId;
+
         return $this;
     }
-
 
     public function contacts($organizationId = null)
     {
@@ -114,7 +115,6 @@ class Api
         return new Api\CreditNotes($this->getClient(), $organizationId ?: $this->getOrganizationId());
     }
 
-
     public function customerPayments($organizationId = null)
     {
         return new Api\CustomerPayments($this->getClient(), $organizationId ?: $this->getOrganizationId());
@@ -140,7 +140,6 @@ class Api
         return new Api\Projects($this->getClient(), $organizationId ?: $this->getOrganizationId());
     }
 
-
     public function purchaseOrder($organizationId = null)
     {
         return new Api\PurchaseOrder($this->getClient(), $organizationId ?: $this->getOrganizationId());
@@ -165,7 +164,6 @@ class Api
     {
         return new Api\Settings($this->getClient(), $organizationId ?: $this->getOrganizationId());
     }
-
 
     public function vendorCredits($organizationId = null)
     {

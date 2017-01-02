@@ -9,6 +9,6 @@ class PurchaseOrder extends BaseApi
 
     public function markAsOpen($id)
     {
-        $this->client->post(self::API_URL . "/$id/status/open", $this->organizationId);
+        $this->client->post(self::API_URL."/$id/status/open", $this->organizationId);
     }
 }
