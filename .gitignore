@@ -1,6 +1,6 @@
 ### Composer template
-composer.lock
-/vendor
+/composer.lock
+/vendor/
 
 # User-specific stuff:
-.idea/
+# see https://help.github.com/articles/ignoring-files/#create-a-global-gitignore
