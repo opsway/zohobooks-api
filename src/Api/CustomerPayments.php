@@ -7,7 +7,7 @@ class CustomerPayments extends BaseApi
     const API_PATH = 'customerpayments';
     const API_KEY = 'payment';
 
-    public function list(array $filters = [])
+    public function getList(array $filters = [])
     {
         $response = $this->client->getList(static::API_PATH, $this->organizationId, $filters);
 

@@ -32,8 +32,10 @@ class BaseApi
 
     /**
      * @param array $filters
+     *
+     * @return array
      */
-    public function list(array $filters = [])
+    public function getList(array $filters = [])
     {
         $response = $this->client->getList(static::API_PATH, $this->organizationId, $filters);
 
