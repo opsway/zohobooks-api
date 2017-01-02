@@ -10,6 +10,7 @@ class Bills extends BaseApi
     public function markAsVoid($billId)
     {
         $response = $this->client->post(static::API_URL.'/'.$billId.'/status/void', $this->organizationId);
+
         return true;
     }
 }
