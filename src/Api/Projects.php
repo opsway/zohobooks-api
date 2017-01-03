@@ -4,6 +4,6 @@ namespace OpsWay\ZohoBooks\Api;
 
 class Projects extends BaseApi
 {
-    const API_URL = 'projects';
+    const API_PATH = 'projects';
     const API_KEY = 'project';
 }
