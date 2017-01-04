@@ -33,29 +33,54 @@ class Client
         );
     }
 
-    public function get($url, $organizationId, $id)
+    /**
+     * @param string $url
+     * @param string $organizationId
+     * @param string $id
+     * @param array $params Additional query params
+     *
+     * @return array
+     */
+    public function get($url, $organizationId, $id, array $params = [])
     {
         return $this->processResult(
-            $this->httpClient->get($url.'/'.$id, ['query' => $this->getParams($organizationId)])
+            $this->httpClient->get($url.'/'.$id, ['query' => $this->getParams($organizationId) + $params])
         );
     }
 
-    public function post($url, $organizationId, $data = [])
+    /**
+     * @param string $url
+     * @param string $organizationId
+     * @param array $data
+     * @param array $params Additional query params
+     *
+     * @return array
+     */
+    public function post($url, $organizationId, array $data = [], array $params = [])
     {
         return $this->processResult($this->httpClient->post(
             $url,
             [
-                'query' => $this->getParams($organizationId, $data),
+                'query' => $this->getParams($organizationId, $data) + $params,
             ]
         ));
     }
 
-    public function put($url, $organizationId, $id, $data)
+    /**
+     * @param string $url
+     * @param string $organizationId
+     * @param mixed $id
+     * @param array $data
+     * @param array $params Additional query params
+     *
+     * @return array
+     */
+    public function put($url, $organizationId, $id, array $data = [], array $params = [])
     {
         return $this->processResult($this->httpClient->put(
             $url.'/'.$id,
             [
-                'query' => $this->getParams($organizationId, $data),
+                'query' => $this->getParams($organizationId, $data) + $params,
             ]
         ));
     }

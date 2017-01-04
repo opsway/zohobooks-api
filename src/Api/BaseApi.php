@@ -40,9 +40,15 @@ class BaseApi
         return $response[static::API_KEY];
     }
 
-    public function create(array $data)
+    /**
+     * @param array $data
+     * @param array $params
+     *
+     * @return array
+     */
+    public function create(array $data, array $params = [])
     {
-        $response = $this->client->post(static::API_URL, $this->organizationId, $data);
+        $response = $this->client->post(static::API_URL, $this->organizationId, $data, $params);
 
         return $response[static::API_KEY];
     }
