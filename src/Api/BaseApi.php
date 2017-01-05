@@ -26,7 +26,7 @@ class BaseApi
         $this->organizationId = $organizationId;
     }
 
-    public function list(array $filters = [])
+    public function getList(array $filters = [])
     {
         $response = $this->client->getList(static::API_URL, $this->organizationId, $filters);
 

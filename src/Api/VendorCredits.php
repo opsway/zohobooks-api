@@ -14,6 +14,12 @@ class VendorCredits extends BaseApi
         return true;
     }
 
+    public function getList(array $filters = [])
+    {
+        $response = $this->client->getList(static::API_URL, $this->organizationId, $filters);
+        return $response['vendorcredits'];
+    }
+
     public function markAsVoid($vendorCreditId)
     {
         $response = $this->client->post(static::API_URL.'/'.$vendorCreditId.'/status/void', $this->organizationId);
