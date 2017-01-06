@@ -26,7 +26,7 @@
         }
     },
     "autoload-dev": {
-        "psr-4": { "OpsWay\\ZohoBooks\\Tests\\": "test/" }
+        "psr-4": { "OpsWay\\ZohoBooks\\Tests\\": "tests/" }
     },
     "extra": {
         "branch-alias": {
