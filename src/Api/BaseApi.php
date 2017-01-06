@@ -62,7 +62,7 @@ class BaseApi
      */
     public function create(array $data, array $params = [])
     {
-        $response = $this->client->post(static::API_URL, $this->organizationId, $data, $params);
+        $response = $this->client->post(static::API_PATH, $this->organizationId, $data, $params);
 
         return $response[static::API_KEY];
     }
