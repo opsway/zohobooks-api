@@ -7,15 +7,22 @@ use Psr\Http\Message\ResponseInterface;
 class Client
 {
     const ENDPOINT = 'https://books.zoho.com/api/v3/';
+
+    /**
+     * @var string
+     */
     protected $httpClient;
+    /**
+     * @var string
+     */
     protected $authToken;
 
     /**
      * Client constructor.
      *
-     * @param      $authToken
-     * @param null $email
-     * @param null $password
+     * @param string $authToken
+     * @param string|null $email
+     * @param string|null $password
      */
     public function __construct($authToken, $email = null, $password = null)
     {
@@ -26,7 +33,14 @@ class Client
         $this->authToken = $authToken;
     }
 
-    public function getList($url, $organizationId, $filters)
+    /**
+     * @param string $url
+     * @param string $organizationId
+     * @param array $filters
+     *
+     * @return array
+     */
+    public function getList($url, $organizationId, array $filters)
     {
         return $this->processResult(
             $this->httpClient->get($url, ['query' => array_merge($this->getParams($organizationId), $filters)])
@@ -85,6 +99,13 @@ class Client
         ));
     }
 
+    /**
+     * @param string $url
+     * @param string $organizationId
+     * @param string $id
+     *
+     * @return array
+     */
     public function delete($url, $organizationId, $id)
     {
         return $this->processResult(
@@ -92,6 +113,12 @@ class Client
         );
     }
 
+    /**
+     * @param string $organizationId
+     * @param array $data
+     *
+     * @return array
+     */
     protected function getParams($organizationId, array $data = [])
     {
         $params = [
@@ -105,6 +132,13 @@ class Client
         return $params;
     }
 
+    /**
+     * @param ResponseInterface $response
+     *
+     * @throws Exception
+     *
+     * @return array
+     */
     protected function processResult(ResponseInterface $response)
     {
         try {
@@ -114,12 +148,20 @@ class Client
                 'message' => 'Internal API error: '.$response->getStatusCode().' '.$response->getReasonPhrase(),
             ];
         }
-        if (isset($result['code']) && $result['code'] == 0) {
+        if (isset($result['code']) && 0 == $result['code']) {
             return $result;
         }
         throw new Exception('Response from Zoho is not success. Message: '.$result['message']);
     }
 
+    /**
+     * @param string|null $email
+     * @param string|null $password
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
     private function auth($email, $password)
     {
         if (null === $email || null === $password) {
