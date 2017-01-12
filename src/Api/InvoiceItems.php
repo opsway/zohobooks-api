@@ -5,7 +5,7 @@ namespace OpsWay\ZohoBooks\Api;
 class InvoiceItems extends BaseApi
 {
     const API_PATH = 'items';
-    const API_KEY = 'invoiceitems';
+    const API_KEY = 'item';
 
     /**
      * @link https://www.zoho.com/books/api/v3/settings/items/#mark-item-as-active.
