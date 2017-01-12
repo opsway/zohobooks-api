@@ -294,4 +294,14 @@ class Api
     {
         return new Api\VendorPayments($this->getClient(), $organizationId ?: $this->getOrganizationId());
     }
+
+    /**
+     * @param string|null $organizationId
+     *
+     * @return \OpsWay\ZohoBooks\Api\InvoiceItems
+     */
+    public function invoiceItems($organizationId = null)
+    {
+        return new Api\InvoiceItems($this->getClient(), $organizationId ?: $this->getOrganizationId());
+    }
 }
