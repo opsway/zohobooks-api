@@ -8,10 +8,10 @@ class InvoiceItems extends BaseApi
     const API_KEY = 'item';
 
     /**
-     * @link https://www.zoho.com/books/api/v3/settings/items/#mark-item-as-active.
+     * @see https://www.zoho.com/books/api/v3/settings/items/#mark-item-as-active.
      * @param string $itemId
      *
-     * @return boolean
+     * @return bool
      */
     public function markAsActive($itemId)
     {
@@ -21,10 +21,10 @@ class InvoiceItems extends BaseApi
     }
 
     /**
-     * @link https://www.zoho.com/books/api/v3/settings/items/#mark-item-as-inactive
+     * @see https://www.zoho.com/books/api/v3/settings/items/#mark-item-as-inactive
      * @param string $itemId
      *
-     * @return boolean
+     * @return bool
      */
     public function markAsInactive($itemId)
     {
