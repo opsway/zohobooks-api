@@ -298,10 +298,10 @@ class Api
     /**
      * @param string|null $organizationId
      *
-     * @return \OpsWay\ZohoBooks\Api\InvoiceItems
+     * @return \OpsWay\ZohoBooks\Api\Settings\Items
      */
-    public function invoiceItems($organizationId = null)
+    public function items($organizationId = null)
     {
-        return new Api\InvoiceItems($this->getClient(), $organizationId ?: $this->getOrganizationId());
+        return new Api\Settings\Items($this->getClient(), $organizationId ?: $this->getOrganizationId());
     }
 }

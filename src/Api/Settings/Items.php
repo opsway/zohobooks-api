@@ -1,8 +1,8 @@
 <?php
 
-namespace OpsWay\ZohoBooks\Api;
+namespace OpsWay\ZohoBooks\Api\Settings;
 
-class InvoiceItems extends BaseApi
+class Items extends BaseApi
 {
     const API_PATH = 'items';
     const API_KEY = 'item';
