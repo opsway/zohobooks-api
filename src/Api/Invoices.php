@@ -27,4 +27,25 @@ class Invoices extends BaseApi
 
         return true;
     }
+
+    /**
+     * Email an invoice to the customer
+     *
+     * @see: https://www.zoho.com/books/api/v3/invoices/#email-an-invoice
+     *
+     * @param string $invoiceId
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function email($invoiceId, array $data)
+    {
+        if (!isset($data['to_mail_ids'])) {
+            throw new \RuntimeException('Parameter `to_mail_ids` is required');
+        }
+
+        $this->client->post(static::API_PATH.'/'.$invoiceId.'/email', $this->organizationId, $data);
+
+        return true;
+    }
 }
