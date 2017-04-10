@@ -39,7 +39,10 @@ class BaseApi
     {
         $response = $this->client->getList(static::API_PATH, $this->organizationId, $filters);
 
-        return $response[static::API_KEY.'s'];
+        return [
+            'items' => $response[static::API_KEY.'s'],
+            'page_context' => $response['page_context'],
+        ];
     }
 
     /**
