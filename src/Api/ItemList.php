@@ -6,16 +6,16 @@ namespace OpsWay\ZohoBooks\Api;
 class ItemList implements \ArrayAccess, \IteratorAggregate
 {
     /**
-     * @var iterable
+     * @var array
      */
     private $items = [];
 
     /**
-     * @var iterable
+     * @var array
      */
     private $pageContext = [];
 
-    function __construct(iterable $items,iterable $pageContext)
+    function __construct($items, $pageContext)
     {
         $this->items = $items;
         $this->pageContext = $pageContext;
@@ -30,9 +30,9 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
-     * @return iterable
+     * @return array
      */
-    public function getPageContext(): iterable
+    public function getPageContext()
     {
         return $this->pageContext;
     }
@@ -42,7 +42,7 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetExists($offset)
     {
-        return property_exists($this, $offset);
+        return isset($offset);
     }
 
     /**
@@ -50,7 +50,7 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetGet($offset)
     {
-        return $this->{$offset} ?? null;
+        return $this->offsetExists($offset)? $this->{$offset}: [];
     }
 
     /**
