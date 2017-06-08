@@ -15,7 +15,11 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     private $pageContext = [];
 
-    function __construct($items, $pageContext)
+    /**
+     * @param array $items
+     * @param array $pageContext
+     */
+    public function __construct(array $items, array $pageContext)
     {
         $this->items = $items;
         $this->pageContext = $pageContext;
