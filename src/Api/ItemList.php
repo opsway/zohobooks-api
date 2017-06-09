@@ -46,7 +46,7 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetExists($offset)
     {
-        return isset($offset);
+        return isset($this->{$offset});
     }
 
     /**
