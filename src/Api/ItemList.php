@@ -2,7 +2,11 @@
 
 namespace OpsWay\ZohoBooks\Api;
 
-
+/**
+ * This class is required in order to add pagination support to zoho books list endpoints
+ *
+ * @see https://www.zoho.com/books/api/v3/#pagination
+ */
 class ItemList implements \ArrayAccess, \IteratorAggregate
 {
     /**
@@ -54,7 +58,7 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetGet($offset)
     {
-        return $this->offsetExists($offset)? $this->{$offset}: [];
+        return $this->offsetExists($offset) ? $this->{$offset} : [];
     }
 
     /**
@@ -72,7 +76,9 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetUnset($offset)
     {
-        $this->{$offset} = [];
+        if ($this->offsetExists($offset)) {
+            $this->{$offset} = [];
+        }
 
         return $this;
     }

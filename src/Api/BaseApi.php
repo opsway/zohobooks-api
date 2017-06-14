@@ -33,7 +33,7 @@ class BaseApi
     /**
      * @param array $filters
      *
-     * @return array
+     * @return ItemList
      */
     public function getList(array $filters = [])
     {
