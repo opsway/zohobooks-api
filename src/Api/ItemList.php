@@ -50,7 +50,7 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetExists($offset)
     {
-        return isset($this->{$offset});
+        return (is_numeric($offset) && isset($this->items[$offset])) || isset($this->{$offset});
     }
 
     /**
@@ -58,7 +58,11 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetGet($offset)
     {
-        return $this->offsetExists($offset) ? $this->{$offset} : [];
+        if (is_numeric($offset) && isset($this->items[$offset])) {
+            return $this->items[$offset];
+        }
+
+        return isset($this->{$offset}) ? $this->{$offset} : [];
     }
 
     /**
@@ -66,7 +70,11 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetSet($offset, $value)
     {
-        $this->{$offset} = $value;
+        if (is_numeric($offset) && isset($this->items[$offset])) {
+            $this->items[$offset] = $value;
+        } elseif (isset($this->{$offset})) {
+            $this->{$offset} = $value;
+        }
 
         return $this;
     }
@@ -76,7 +84,9 @@ class ItemList implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetUnset($offset)
     {
-        if ($this->offsetExists($offset)) {
+        if (is_numeric($offset) && isset($this->items[$offset])) {
+            $this->items[$offset] = [];
+        } elseif (isset($this->{$offset})) {
             $this->{$offset} = [];
         }
 
