@@ -2,6 +2,8 @@
 
 namespace OpsWay\ZohoBooks\Api\Settings;
 
+use OpsWay\ZohoBooks\Api\BaseApi;
+
 class Items extends BaseApi
 {
     const API_PATH = 'items';
