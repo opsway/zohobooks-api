@@ -36,6 +36,9 @@ class BaseApiTest extends TestCase
                     ['id' => 2],
                     ['id' => 3]
                 ],
+                'page_context' => [
+                    'page' => 1,
+                ]
             ]);
         $list = $this->baseApi->getList($filter);
         // Test iterable list
