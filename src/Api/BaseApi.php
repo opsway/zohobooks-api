@@ -33,13 +33,13 @@ class BaseApi
     /**
      * @param array $filters
      *
-     * @return array
+     * @return ItemList
      */
     public function getList(array $filters = [])
     {
         $response = $this->client->getList(static::API_PATH, $this->organizationId, $filters);
 
-        return $response[static::API_KEY.'s'];
+        return new ItemList($response[static::API_KEY.'s'], $response['page_context']);
     }
 
     /**
