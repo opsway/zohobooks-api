@@ -13,4 +13,11 @@ class Bills extends BaseApi
 
         return true;
     }
+
+    public function addComment($billId, array $data)
+    {
+        $response = $this->client->post(static::API_PATH . '/' . $billId . '/comments', $this->organizationId, $data);
+
+        return true;
+    }
 }
