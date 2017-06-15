@@ -15,7 +15,10 @@ before_script:
 
 script:
   - composer cs-check
-  - composer test
+  - composer test-cover
+
+after_script:
+  - bash <(curl -s https://codecov.io/bash) -t e4de22ca-5f85-40e5-8f90-4c633cc4df9b
 
 cache:
   directories:
