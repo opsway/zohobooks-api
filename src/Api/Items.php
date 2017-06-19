@@ -1,8 +1,6 @@
 <?php
 
-namespace OpsWay\ZohoBooks\Api\Settings;
-
-use OpsWay\ZohoBooks\Api\BaseApi;
+namespace OpsWay\ZohoBooks\Api;
 
 class Items extends BaseApi
 {
