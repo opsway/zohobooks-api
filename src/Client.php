@@ -2,6 +2,7 @@
 
 namespace OpsWay\ZohoBooks;
 
+use GuzzleHttp\Client as BaseClient;
 use Psr\Http\Message\ResponseInterface;
 
 class Client
@@ -9,7 +10,7 @@ class Client
     const ENDPOINT = 'https://books.zoho.com/api/v3/';
 
     /**
-     * @var string
+     * @var BaseClient
      */
     protected $httpClient;
     /**
@@ -26,7 +27,7 @@ class Client
      */
     public function __construct($authToken, $email = null, $password = null)
     {
-        $this->httpClient = new \GuzzleHttp\Client(['base_uri' => self::ENDPOINT, 'http_errors' => false]);
+        $this->httpClient = new BaseClient(['base_uri' => self::ENDPOINT, 'http_errors' => false]);
         if (!$authToken) {
             $authToken = $this->auth($email, $password);
         }
@@ -58,7 +59,7 @@ class Client
     public function get($url, $organizationId, $id, array $params = [])
     {
         return $this->processResult(
-            $this->httpClient->get($url.'/'.$id, ['query' => $this->getParams($organizationId) + $params])
+            $this->httpClient->get($url.'/'.$id, ['query' => $params + $this->getParams($organizationId)])
         );
     }
 
@@ -75,7 +76,8 @@ class Client
         return $this->processResult($this->httpClient->post(
             $url,
             [
-                'query' => $this->getParams($organizationId, $data) + $params,
+                'query' => $params + $this->getParams($organizationId),
+                'form_params' => ['JSONString' => \GuzzleHttp\json_encode($data)],
             ]
         ));
     }
@@ -94,7 +96,8 @@ class Client
         return $this->processResult($this->httpClient->put(
             $url.'/'.$id,
             [
-                'query' => $this->getParams($organizationId, $data) + $params,
+                'query' => $params + $this->getParams($organizationId),
+                'form_params' => ['JSONString' => \GuzzleHttp\json_encode($data)],
             ]
         ));
     }
@@ -126,7 +129,7 @@ class Client
             'organization_id' => $organizationId,
         ];
         if ($data) {
-            $params['JSONString'] = json_encode($data);
+            $params['JSONString'] = \GuzzleHttp\json_encode($data);
         }
 
         return $params;
