@@ -2,6 +2,7 @@
 
 namespace OpsWay\ZohoBooks\Api;
 
+use GuzzleHttp\Psr7\Stream;
 use OpsWay\ZohoBooks\Client;
 
 class BaseApi
@@ -44,12 +45,16 @@ class BaseApi
 
     /**
      * @param string $id
+     * @param array $params
      *
-     * @return array
+     * @return array|Stream
      */
-    public function get($id)
+    public function get($id, $params = [])
     {
-        $response = $this->client->get(static::API_PATH, $this->organizationId, $id);
+        $response = $this->client->get(static::API_PATH, $this->organizationId, $id, $params);
+        if ($response instanceof Stream) {
+            return $response;
+        }
 
         return $response[static::API_KEY];
     }
