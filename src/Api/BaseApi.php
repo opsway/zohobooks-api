@@ -49,7 +49,7 @@ class BaseApi
      *
      * @return array|Stream
      */
-    public function get($id, $params = [])
+    public function get($id, array $params = [])
     {
         $response = $this->client->get(static::API_PATH, $this->organizationId, $id, $params);
         if ($response instanceof Stream) {
