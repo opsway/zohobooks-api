@@ -73,13 +73,13 @@ class Client
      */
     public function post($url, $organizationId, array $data = [], array $params = [])
     {
-        return $this->processResult($this->httpClient->post(
-            $url,
-            [
-                'query' => $params + $this->getParams($organizationId),
-                'form_params' => ['JSONString' => \GuzzleHttp\json_encode($data)],
-            ]
-        ));
+        $body = [
+            'query' => $params + $this->getParams($organizationId),
+        ];
+        if ($data) {
+            $body['form_params'] = ['JSONString' => \GuzzleHttp\json_encode($data)];
+        }
+        return $this->processResult($this->httpClient->post($url, $body));
     }
 
     /**
