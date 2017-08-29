@@ -29,9 +29,9 @@ class BaseApiTest extends TestCase
         $filter = ['test' => '123'];
         $this->client->expects($this->once())
             ->method('getList')
-            ->with('', self::ORG_ID, $filter)
+            ->with('base_path', self::ORG_ID, $filter)
             ->willReturn([
-                's' => [ // List of item
+                'base_keys' => [ // List of item
                     ['id' => 1],
                     ['id' => 2],
                     ['id' => 3]
@@ -49,5 +49,62 @@ class BaseApiTest extends TestCase
         }
         // Test directly access list by key
         $this->assertEquals(1, $list[0]['id']);
+    }
+
+    public function testGet()
+    {
+        $this->client->expects($this->once())
+            ->method('get')
+            ->with('base_path', self::ORG_ID, 1, ['test' => 'test'])
+            ->willReturn([
+                'base_key' => [ // List of item
+                    'id' => 1,
+                ],
+            ]);
+        $result = $this->baseApi->get(1, ['test' => 'test']);
+        $this->assertEquals(['id' => 1], $result);
+    }
+
+    public function testCreate()
+    {
+        $data = ['number' => '123'];
+        $this->client->expects($this->once())
+            ->method('post')
+            ->with('base_path', self::ORG_ID, $data, [])
+            ->willReturn([
+                'base_key' => [ // List of item
+                    'id' => 1,
+                ],
+            ]);
+        $result = $this->baseApi->create($data);
+        $this->assertEquals(['id' => 1], $result);
+    }
+
+    public function testUpdate()
+    {
+        $data = ['base_key_id' => 123, 'number' => '123'];
+        $this->client->expects($this->once())
+            ->method('put')
+            ->with('base_path', self::ORG_ID, 123, ['number' => '123'])
+            ->willReturn([
+                'base_key' => [ // List of item
+                    'id' => 1,
+                ],
+            ]);
+        $result = $this->baseApi->update($data);
+        $this->assertEquals(['id' => 1], $result);
+    }
+
+    public function testDelete()
+    {
+        $id = 1;
+        $this->client->expects($this->once())
+            ->method('delete')
+            ->with('base_path', self::ORG_ID, $id)
+            ->willReturn([
+                'base_key' => [],
+            ]);
+        $result = $this->baseApi->delete($id);
+        $this->assertTrue($result);
     }
 }

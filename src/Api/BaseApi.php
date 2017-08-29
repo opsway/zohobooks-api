@@ -7,8 +7,8 @@ use OpsWay\ZohoBooks\Client;
 
 class BaseApi
 {
-    const API_PATH = '';
-    const API_KEY = '';
+    const API_PATH = 'base_path';
+    const API_KEY = 'base_key';
 
     /**
      * @var Client
