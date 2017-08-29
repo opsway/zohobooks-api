@@ -145,7 +145,11 @@ class Client
     protected function processResult(ResponseInterface $response)
     {
         try {
-            $result = \GuzzleHttp\json_decode($response->getBody(), true);
+            if (preg_grep('/json/', $response->getHeader('Content-Type'))) {
+                $result = \GuzzleHttp\json_decode($response->getBody(), true);
+            } else {
+                return $response->getBody();
+            }
         } catch (\InvalidArgumentException $e) {
             $result = [
                 'message' => 'Internal API error: '.$response->getStatusCode().' '.$response->getReasonPhrase(),
