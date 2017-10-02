@@ -10,6 +10,9 @@ class BaseApi
     const API_PATH = 'base_path';
     const API_KEY = 'base_key';
 
+    const SORT_ORDER_ASCENDING = 'A';
+    const SORT_ORDER_DESCENDING = 'D';
+
     /**
      * @var Client
      */
