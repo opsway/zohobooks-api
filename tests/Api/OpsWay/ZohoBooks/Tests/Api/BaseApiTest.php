@@ -4,6 +4,8 @@ namespace OpsWay\ZohoBooks\Tests\Api;
 
 use OpsWay\ZohoBooks\Api\BaseApi;
 use OpsWay\ZohoBooks\Client;
+use GuzzleHttp\Client as BaseClient;
+use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
 
 class BaseApiTest extends TestCase
@@ -17,11 +19,63 @@ class BaseApiTest extends TestCase
      * @var BaseApi
      */
     private $baseApi;
+    /**
+     * @var ClientInterface
+     */
+    private $customHttpClient;
 
     public function setUp()
     {
         $this->client = $this->createMock(Client::class);
         $this->baseApi = new BaseApi($this->client, self::ORG_ID);
+        $this->customHttpClient = $this->createMock(BaseClient::class);
+    }
+
+    public function testCustomHttpClient()
+    {
+        $this->customHttpClient->expects($this->any())
+            ->method('getConfig')
+            ->with('http_errors')
+            ->willReturn(false)
+        ;
+        $client = $this->getMockBuilder(Client::class)
+            ->setConstructorArgs(['authToken', null, null, $this->customHttpClient])
+            ->getMock()
+        ;
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /Request option "http_errors" must be set to `false` at HTTP client/
+     */
+    public function testCustomHttpClientWithWrongHttpErrorsConfig()
+    {
+        $this->customHttpClient->expects($this->any())
+            ->method('getConfig')
+            ->with('http_errors')
+            ->willReturn(true)
+        ;
+        $client = $this->getMockBuilder(Client::class)
+            ->setConstructorArgs(['authToken', null, null, $this->customHttpClient])
+            ->getMock()
+        ;
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /If argument 4 is provided, argument 5 must be omitted or passed with an empty array as value/
+     */
+    public function testCustomHttpClientWithRequestOptions()
+    {
+        $this->customHttpClient->expects($this->any())
+            ->method('getConfig')
+            ->with('http_errors')
+            ->willReturn(true)
+        ;
+        $client = $this->getMockBuilder(Client::class)
+            ->setConstructorArgs(['authToken', null, null, $this->customHttpClient, ['verify' => true]])
+            ->getMock()
+        ;
     }
 
     public function testGetList()
