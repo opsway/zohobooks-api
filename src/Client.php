@@ -3,6 +3,8 @@
 namespace OpsWay\ZohoBooks;
 
 use GuzzleHttp\Client as BaseClient;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 
 class Client
@@ -24,10 +26,19 @@ class Client
      * @param string $authToken
      * @param string|null $email
      * @param string|null $password
+     * @param ClientInterface|null $httpClient
+     * @param array $requestOptions
      */
-    public function __construct($authToken, $email = null, $password = null)
+    public function __construct($authToken, $email = null, $password = null, ClientInterface $httpClient = null, array $requestOptions = [])
     {
-        $this->httpClient = new BaseClient(['base_uri' => self::ENDPOINT, 'http_errors' => false]);
+        if ($httpClient && $requestOptions) {
+            throw new \InvalidArgumentException('If argument 4 is provided, argument 5 must be omitted or passed with an empty array as value');
+        }
+        $requestOptions += ['base_uri' => self::ENDPOINT, RequestOptions::HTTP_ERRORS => false];
+        $this->httpClient = $httpClient ?: new BaseClient($requestOptions);
+        if (false !== $this->httpClient->getConfig(RequestOptions::HTTP_ERRORS)) {
+            throw new \InvalidArgumentException(sprintf('Request option "%s" must be set to `false` at HTTP client', RequestOptions::HTTP_ERRORS));
+        }
         if (!$authToken) {
             $authToken = $this->auth($email, $password);
         }
