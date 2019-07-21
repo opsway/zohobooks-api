@@ -304,4 +304,14 @@ class Api
     {
         return new Api\Items($this->getClient(), $organizationId ?: $this->getOrganizationId());
     }
+
+    /**
+     * @param null $organizationId
+     *
+     * @return Api\ItemAdjustments
+     */
+    public function inventoryAdjustments($organizationId = null)
+    {
+        return new Api\ItemAdjustments($this->getClient(), $organizationId ?: $this->getOrganizationId());
+    }
 }
