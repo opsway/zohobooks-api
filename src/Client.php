@@ -21,6 +21,11 @@ class Client
     protected $authToken;
 
     /**
+     * @var array|string[][]
+     */
+    protected $lastResponseHeaders = [];
+
+    /**
      * Client constructor.
      *
      * @param string $authToken
@@ -155,6 +160,7 @@ class Client
      */
     protected function processResult(ResponseInterface $response)
     {
+        $this->lastResponseHeaders = $response->getHeaders();
         try {
             if (preg_grep('/json/', $response->getHeader('Content-Type'))) {
                 $result = \GuzzleHttp\json_decode($response->getBody(), true);
@@ -195,6 +201,9 @@ class Client
                 ],
             ]
         );
+
+        $this->lastResponseHeaders = $response->getHeaders();
+
         $authToken = '';
         if (preg_match('/AUTHTOKEN=(?<token>[a-z0-9]+)/', (string) $response->getBody(), $matches)) {
             $authToken = $matches['token'];
