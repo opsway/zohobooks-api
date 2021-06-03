@@ -6,13 +6,14 @@ use OpsWay\ZohoBooks\Api\BaseApi;
 use OpsWay\ZohoBooks\Client;
 use GuzzleHttp\Client as BaseClient;
 use GuzzleHttp\ClientInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class BaseApiTest extends TestCase
 {
     const ORG_ID = 1;
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var Client&MockObject
      */
     private $client;
     /**
@@ -24,13 +25,18 @@ class BaseApiTest extends TestCase
      */
     private $customHttpClient;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->client = $this->createMock(Client::class);
         $this->baseApi = new BaseApi($this->client, self::ORG_ID);
         $this->customHttpClient = $this->createMock(BaseClient::class);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testCustomHttpClient()
     {
         $this->customHttpClient->expects($this->any())
@@ -38,44 +44,36 @@ class BaseApiTest extends TestCase
             ->with('http_errors')
             ->willReturn(false)
         ;
-        $client = $this->getMockBuilder(Client::class)
-            ->setConstructorArgs(['authToken', null, null, $this->customHttpClient])
-            ->getMock()
-        ;
+
+        new Client('authToken', null, null, $this->customHttpClient);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /Request option "http_errors" must be set to `false` at HTTP client/
-     */
     public function testCustomHttpClientWithWrongHttpErrorsConfig()
     {
-        $this->customHttpClient->expects($this->any())
+        $this->customHttpClient->expects($this->once())
             ->method('getConfig')
             ->with('http_errors')
             ->willReturn(true)
         ;
-        $client = $this->getMockBuilder(Client::class)
-            ->setConstructorArgs(['authToken', null, null, $this->customHttpClient])
-            ->getMock()
-        ;
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/Request option "http_errors" must be set to `false` at HTTP client/');
+
+        new Client('authToken', null, null, $this->customHttpClient);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /If argument 4 is provided, argument 5 must be omitted or passed with an empty array as value/
-     */
     public function testCustomHttpClientWithRequestOptions()
     {
-        $this->customHttpClient->expects($this->any())
+        $this->customHttpClient->expects($this->never())
             ->method('getConfig')
             ->with('http_errors')
             ->willReturn(true)
         ;
-        $client = $this->getMockBuilder(Client::class)
-            ->setConstructorArgs(['authToken', null, null, $this->customHttpClient, ['verify' => true]])
-            ->getMock()
-        ;
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/If argument 4 is provided, argument 5 must be omitted or passed with an empty array as value/');
+
+        new Client('authToken', null, null, $this->customHttpClient, ['verify' => true]);
     }
 
     public function testGetList()
