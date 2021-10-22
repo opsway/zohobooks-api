@@ -39,10 +39,10 @@ class Client
     {
         $this->setRequestOauth($acessToken);
 
-        if ($httpClient && $this->requestOptions) {
+        if ($httpClient && $requestOptions) {
             throw new \InvalidArgumentException('If argument 4 is provided, argument 5 must be omitted or passed with an empty array as value');
         }
-        $requestOptions += ['base_uri' => self::ENDPOINT, RequestOptions::HTTP_ERRORS => false];
+        $this->requestOptions += ['base_uri' => self::ENDPOINT, RequestOptions::HTTP_ERRORS => false];
         $this->httpClient = $httpClient ?: new BaseClient($this->requestOptions);
         if (false !== $this->httpClient->getConfig(RequestOptions::HTTP_ERRORS)) {
             throw new \InvalidArgumentException(sprintf('Request option "%s" must be set to `false` at HTTP client', RequestOptions::HTTP_ERRORS));
@@ -57,7 +57,7 @@ class Client
      */
     private function setRequestOauth($acessToken)
     {
-        $this->requestOptions['headers']['Authorization'] = "Zoho-oauthtoken {$acessToken};
+        $this->requestOptions['headers']['Authorization'] = "Zoho-oauthtoken {$acessToken}";
     }
 
     /**
