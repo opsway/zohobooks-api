@@ -18,36 +18,46 @@ class Client
     /**
      * @var string
      */
-    protected $authToken;
+    protected $acessToken;
 
     /**
      * @var array|string[][]
      */
     protected $lastResponseHeaders = [];
 
+
+    protected $requestOptions = [];
+
     /**
      * Client constructor.
      *
-     * @param string $authToken
-     * @param string|null $email
-     * @param string|null $password
+     * @param string $acessToken
      * @param ClientInterface|null $httpClient
      * @param array $requestOptions
      */
-    public function __construct($authToken, $email = null, $password = null, ClientInterface $httpClient = null, array $requestOptions = [])
+    public function __construct($acessToken, ClientInterface $httpClient = null, array $requestOptions = [])
     {
-        if ($httpClient && $requestOptions) {
+        $this->setRequestOauth($acessToken);
+
+        if ($httpClient && $this->requestOptions) {
             throw new \InvalidArgumentException('If argument 4 is provided, argument 5 must be omitted or passed with an empty array as value');
         }
         $requestOptions += ['base_uri' => self::ENDPOINT, RequestOptions::HTTP_ERRORS => false];
-        $this->httpClient = $httpClient ?: new BaseClient($requestOptions);
+        $this->httpClient = $httpClient ?: new BaseClient($this->requestOptions);
         if (false !== $this->httpClient->getConfig(RequestOptions::HTTP_ERRORS)) {
             throw new \InvalidArgumentException(sprintf('Request option "%s" must be set to `false` at HTTP client', RequestOptions::HTTP_ERRORS));
         }
-        if (!$authToken) {
-            $authToken = $this->auth($email, $password);
-        }
-        $this->authToken = $authToken;
+    }
+
+    /**
+     * append access token to request header
+     * 
+     * @param accessToken string
+     * @return void
+     */
+    private function setRequestOauth($acessToken)
+    {
+        $this->requestOptions['headers']['Authorization'] = "Zoho-oauthtoken {$acessToken};
     }
 
     /**
@@ -141,7 +151,6 @@ class Client
     protected function getParams($organizationId, array $data = [])
     {
         $params = [
-            'authtoken' => $this->authToken,
             'organization_id' => $organizationId,
         ];
         if ($data) {
@@ -176,39 +185,5 @@ class Client
             return $result;
         }
         throw new Exception('Response from Zoho is not success. Message: '.$result['message']);
-    }
-
-    /**
-     * @param string|null $email
-     * @param string|null $password
-     *
-     * @throws Exception
-     *
-     * @return string
-     */
-    private function auth($email, $password)
-    {
-        if (null === $email || null === $password) {
-            throw new Exception('Please provide authToken OR Email & Password for auto authentication.');
-        }
-        $response = $this->httpClient->post(
-            'https://accounts.zoho.com/apiauthtoken/nb/create',
-            [
-                'form_params' => [
-                    'SCOPE' => 'ZohoBooks/booksapi',
-                    'EMAIL_ID' => $email,
-                    'PASSWORD' => $password,
-                ],
-            ]
-        );
-
-        $this->lastResponseHeaders = $response->getHeaders();
-
-        $authToken = '';
-        if (preg_match('/AUTHTOKEN=(?<token>[a-z0-9]+)/', (string) $response->getBody(), $matches)) {
-            $authToken = $matches['token'];
-        }
-
-        return $authToken;
     }
 }
